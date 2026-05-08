@@ -1,36 +1,169 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MEI Certo 🧾
 
-## Getting Started
+Agente financeiro para MEIs via WhatsApp — built by @matheus-qrz
 
-First, run the development server:
+## Stack
+
+- **Frontend/API**: Next.js 15 + TypeScript + Tailwind v4
+- **Banco**: Supabase (PostgreSQL + Auth)
+- **IA**: Claude API (Haiku 4.5 + Sonnet 4.6)
+- **WhatsApp**: Evolution API (self-hosted)
+- **Pagamentos**: Stripe + Abacatepay (PIX)
+- **Deploy**: Vercel (Next.js) + Railway (Evolution API)
+
+---
+
+## Setup Local
+
+### 1. Clonar e instalar
+
+```bash
+git clone https://github.com/matheus-qrz/mei-certo
+cd mei-certo
+npm install
+cp .env.example .env.local
+```
+
+### 2. Supabase
+
+```bash
+# Instala CLI
+npm install -g supabase
+
+# Inicia projeto local
+supabase init
+supabase start
+
+# Aplica as migrations
+supabase db push
+
+# Gera os tipos TypeScript
+npm run db:types
+```
+
+### 3. Evolution API (WhatsApp)
+
+```bash
+# Sobe o container
+cd docker
+docker-compose up -d
+
+# Cria a instância
+curl -X POST http://localhost:8080/instance/create \
+  -H "apikey: SEU_EVOLUTION_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"instanceName": "meicerto", "qrcode": true}'
+
+# Pega o QR Code
+curl http://localhost:8080/instance/connect/meicerto \
+  -H "apikey: SEU_EVOLUTION_API_KEY"
+
+# Escaneie com o número do MEI Certo
+```
+
+### 4. Configurar variáveis de ambiente
+
+Preencha o `.env.local` com:
+- Chaves do Supabase (dashboard → Settings → API)
+- `ANTHROPIC_API_KEY` (console.anthropic.com)
+- `EVOLUTION_API_URL` e `EVOLUTION_API_KEY`
+- Chaves do Stripe (dashboard.stripe.com)
+
+### 5. Rodar
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 6. Expor webhook localmente (dev)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Instala ngrok
+npx ngrok http 3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Configura a URL no Evolution API
+# WEBHOOK_GLOBAL_URL=https://xxxx.ngrok.io/api/webhook/whatsapp
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Estrutura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── webhook/
+│   │   │   ├── whatsapp/route.ts  ← Coração do agente
+│   │   │   └── stripe/route.ts    ← Assinaturas
+│   │   ├── subscription/          ← Criar checkout session
+│   │   └── user/                  ← CRUD de usuário
+│   └── dashboard/                 ← Interface web
+├── lib/
+│   ├── claude/agent.ts            ← Lógica do agente IA
+│   ├── evolution/client.ts        ← Cliente WhatsApp
+│   ├── supabase/
+│   │   ├── client.ts              ← Admin + público
+│   │   └── queries.ts             ← Todas as queries
+│   └── utils.ts                   ← Formatação, datas
+├── types/index.ts                 ← Tipos TypeScript
+supabase/
+└── migrations/001_initial_schema.sql
+docker/
+└── docker-compose.yml             ← Evolution API
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Fluxo do Agente
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+MEI → WhatsApp
+     ↓
+Evolution API (webhook)
+     ↓
+POST /api/webhook/whatsapp
+     ↓
+getAgentContext() ← Supabase
+     ↓
+runAgent() ← Claude Haiku 4.5
+     ↓
+createTransaction() ← Supabase
+     ↓
+sendText() ← Evolution API
+     ↓
+MEI recebe resposta
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Custos Estimados
+
+| Serviço | Custo |
+|---|---|
+| Vercel | Grátis (até 100k req/mês) |
+| Supabase | Grátis (até 500MB) |
+| Railway (Evolution) | ~$5-10/mês |
+| Claude API (200 users) | ~R$110/mês |
+| **Total** | **~R$160-200/mês** |
+
+---
+
+## Roadmap
+
+- [x] Schema Supabase
+- [x] Agente Claude (Haiku)
+- [x] Webhook WhatsApp
+- [x] Webhook Stripe
+- [ ] Dashboard web
+- [ ] Onboarding via WhatsApp
+- [ ] Resumo mensal automático (Sonnet)
+- [ ] Leitura de foto/comprovante
+- [ ] Meta API Oficial (v2)
+
+---
+
+## Licença
+
+MIT — matheus-qrz
