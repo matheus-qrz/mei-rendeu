@@ -4,9 +4,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    serverComponentsExternalPackages: ["@anthropic-ai/sdk"],
-  },
+  serverExternalPackages: ["@anthropic-ai/sdk"],
 }
 
 export default nextConfig
