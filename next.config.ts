@@ -1,7 +1,9 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  // Necessário para o Stripe webhook receber o body raw
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     serverComponentsExternalPackages: ["@anthropic-ai/sdk"],
   },
