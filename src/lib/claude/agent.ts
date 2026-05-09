@@ -34,6 +34,7 @@ ${ytdRevenue > MEI_LIMIT * 0.8 ? "⚠️ ATENÇÃO: Você está se aproximando d
 4. Separe despesas PJ (do negócio) de PF (pessoais)
 5. Conheça e use: DAS (guia de pagamento MEI), teto MEI, categorias brasileiras
 6. Ao registrar, SEMPRE responda com o JSON estruturado abaixo
+7. NUNCA use markdown como #, ##, --- ou ___. Use apenas *texto* para negrito (compatível com WhatsApp)
 
 ═══ CATEGORIAS DE DESPESA ═══
 Operacional: Combustível, Material, Aluguel, Internet, Telefone, Software
@@ -43,10 +44,20 @@ Fiscal: DAS, Contador, Taxas
 ═══ FORMATO DE RESPOSTA PARA REGISTROS ═══
 Quando registrar uma transação, responda EXATAMENTE assim (JSON + mensagem):
 
+REGRA CRÍTICA DE VALORES: o campo "amount" deve ser SEMPRE em centavos inteiros.
+Exemplos:
+  R$1,00   → 100
+  R$45,00  → 4500
+  R$80,00  → 8000
+  R$850,00 → 85000
+  R$1.200,00 → 120000
+
+NUNCA use decimais no amount. NUNCA use valores como 8.50, 45.0 ou 0.80.
+
 <transaction>
 {
   "action": "register_income" | "register_expense",
-  "amount": 15000,
+  "amount": 85000,
   "category": "Serviços",
   "description": "Serviço de instalação",
   "isPessoal": false
@@ -102,7 +113,19 @@ export async function runAgent(
 
   if (transactionMatch) {
     try {
-      transaction = JSON.parse(transactionMatch[1].trim())
+      const parsed = JSON.parse(transactionMatch[1].trim())
+
+      // Garante que o amount está em centavos inteiros
+      // Se o Claude retornar decimal (ex: 8.50), converte corretamente
+      const rawAmount = parsed.amount as number
+      const amountCents = Number.isInteger(rawAmount)
+        ? rawAmount
+        : Math.round(rawAmount * 100)
+
+      transaction = {
+        ...parsed,
+        amount: amountCents,
+      }
     } catch {
       // JSON malformado — ignora e não registra
     }
@@ -132,7 +155,9 @@ export async function runMonthlyAnalysis(ctx: AgentContext): Promise<string> {
     messages: [
       {
         role: "user",
-        content: `Gere um resumo financeiro mensal para o MEI ${user.name}.
+        content: `Você é o MEI Certo, assistente financeiro via WhatsApp.
+
+Gere o resumo mensal do MEI ${user.name} com os dados abaixo.
 
 Dados do mês:
 - Entradas: ${formatCurrency(currentMonth.income)}
@@ -140,13 +165,19 @@ Dados do mês:
 - DAS estimado: ${formatCurrency(currentMonth.dasEstimate)}
 - Faturamento no ano: ${formatCurrency(ytdRevenue)}
 
-Escreva um resumo amigável de até 5 linhas para WhatsApp:
-1. Balanço do mês (positivo/negativo)
-2. DAS a pagar (com data: dia 20)
-3. Situação do teto MEI
-4. Uma dica prática
+INSTRUÇÕES:
+- Escreva exatamente 4 linhas, cada uma começando com um emoji
+- Linha 1: balanço do mês (entradas, saídas, lucro)
+- Linha 2: DAS a pagar com vencimento no dia 20
+- Linha 3: quanto do teto MEI já foi usado (em % e em reais)
+- Linha 4: uma dica prática curta
 
-Use emojis. Seja direto e positivo.`,
+REGRAS ABSOLUTAS DE FORMATAÇÃO — sem exceções:
+- Use apenas *palavra* para negrito (padrão WhatsApp)
+- PROIBIDO: #, ##, ###, ---, ___, qualquer outro símbolo markdown
+- PROIBIDO: blocos de código, listas com -, listas com *
+- PROIBIDO: adicionar qualquer texto além das 4 linhas (sem introdução, sem observações, sem explicações)
+- Sua resposta deve conter APENAS as 4 linhas do resumo, nada mais`,
       },
     ],
   })
