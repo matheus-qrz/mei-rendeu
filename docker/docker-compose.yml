@@ -56,5 +56,5 @@ volumes:
 # 2. Configure as variáveis de ambiente
 # 3. docker-compose up -d
 # 4. Acesse: GET {SERVER_URL}/instance/create
-#    Body: { "instanceName": "meicerto", "qrcode": true }
-# 5. Escaneie o QR code com o número do MEI Certo
+#    Body: { "instanceName": "meirendeu", "qrcode": true }
+# 5. Escaneie o QR code com o número do MEI Rendeu

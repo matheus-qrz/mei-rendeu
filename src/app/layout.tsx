@@ -10,7 +10,7 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "MEI Certo — Seu financeiro no WhatsApp",
+  title: "MEI Rendeu — Seu financeiro no WhatsApp",
   description:
     "Agente financeiro com IA para MEIs brasileiros via WhatsApp. Registre receitas, controle despesas, receba alertas do DAS e do teto MEI — sem planilha, sem app novo.",
   keywords: [
@@ -20,24 +20,24 @@ export const metadata: Metadata = {
     "WhatsApp",
     "DAS",
     "controle financeiro",
-    "MEI Certo",
+    "MEI Rendeu",
   ],
-  authors: [{ name: "MEI Certo" }],
-  creator: "MEI Certo",
-  metadataBase: new URL("https://meicerto.com.br"),
+  authors: [{ name: "MEI Rendeu" }],
+  creator: "MEI Rendeu",
+  metadataBase: new URL("https://mei-rendeu.com.br"),
   openGraph: {
-    title: "MEI Certo — Seu financeiro no WhatsApp",
+    title: "MEI Rendeu — Seu financeiro no WhatsApp",
     description:
       "IA que registra suas receitas, lembra do DAS e avisa quando você tá chegando no teto — tudo pelo WhatsApp.",
-    url: "https://meicerto.com.br",
-    siteName: "MEI Certo",
+    url: "https://mei-rendeu.com.br",
+    siteName: "MEI Rendeu",
     locale: "pt_BR",
     type: "website",
     // images: [{ url: "/og-image.png", width: 1200, height: 630 }], // TODO: adicionar OG image
   },
   twitter: {
     card: "summary_large_image",
-    title: "MEI Certo — Seu financeiro no WhatsApp",
+    title: "MEI Rendeu — Seu financeiro no WhatsApp",
     description:
       "IA que registra suas receitas, lembra do DAS e avisa quando você tá chegando no teto.",
     // images: ["/og-image.png"], // TODO: adicionar OG image

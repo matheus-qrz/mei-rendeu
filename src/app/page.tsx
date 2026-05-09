@@ -52,7 +52,7 @@ export default function LandingPage() {
       <nav className="relative z-10 flex items-center justify-between px-6 py-5 max-w-5xl mx-auto">
         <div className="flex items-center gap-2">
           <span className="text-2xl">🟢</span>
-          <span className="font-black text-xl tracking-tight">MEI Certo</span>
+          <span className="font-black text-xl tracking-tight">MEI Rendeu</span>
         </div>
         <a
           href="#lista"
@@ -93,7 +93,7 @@ export default function LandingPage() {
                     Você tá na lista!
                   </p>
                   <p className="text-[#a0b8a8] text-sm mt-1">
-                    Assim que o MEI Certo abrir, você é um dos primeiros a
+                    Assim que o MEI Rendeu abrir, você é um dos primeiros a
                     saber.
                   </p>
                 </div>
@@ -292,7 +292,7 @@ export default function LandingPage() {
             Chega de susto com o DAS.
           </h2>
           <p className="text-[#2a4a1f] text-lg mb-8 max-w-md mx-auto">
-            Entre na lista e seja um dos primeiros MEIs a testar o MEI Certo.
+            Entre na lista e seja um dos primeiros MEIs a testar o MEI Rendeu.
           </p>
           <a
             href="#lista"
@@ -307,14 +307,14 @@ export default function LandingPage() {
       <footer className="relative z-10 py-8 max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <span className="text-lg">🟢</span>
-          <span className="font-black text-sm text-white">MEI Certo</span>
+          <span className="font-black text-sm text-white">MEI Rendeu</span>
         </div>
         <p className="text-[#3a5a45] text-xs text-center">
           Feito com ☕ em João Pessoa/NE.{" "}
           <span>Não somos contador. Somos assistente financeiro.</span>
         </p>
         <p className="text-[#3a5a45] text-xs">
-          © {new Date().getFullYear()} MEI Certo
+          © {new Date().getFullYear()} MEI Rendeu
         </p>
       </footer>
     </div>
@@ -330,7 +330,9 @@ function WhatsAppMockup() {
           MC
         </div>
         <div>
-          <p className="text-white font-bold text-sm leading-none">MEI Certo</p>
+          <p className="text-white font-bold text-sm leading-none">
+            MEI Rendeu
+          </p>
           <p className="text-[#a0d4cd] text-xs mt-0.5">online</p>
         </div>
       </div>

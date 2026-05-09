@@ -13,7 +13,7 @@ function buildSystemPrompt(ctx: AgentContext): string {
   const remaining = MEI_LIMIT - ytdRevenue
   const monthName = getCurrentMonthName()
 
-  return `Você é o MEI Certo, assistente financeiro do(a) ${user.name}.
+  return `Você é o MEI Rendeu, assistente financeiro do(a) ${user.name}.
 ${user.cnpj ? `CNPJ: ${user.cnpj}` : "MEI ainda sem CNPJ cadastrado."}
 Plano atual: ${user.plan}
 
@@ -155,7 +155,7 @@ export async function runMonthlyAnalysis(ctx: AgentContext): Promise<string> {
     messages: [
       {
         role: "user",
-        content: `Você é o MEI Certo, assistente financeiro via WhatsApp.
+        content: `Você é o MEI Rendeu, assistente financeiro via WhatsApp.
 
 Gere o resumo mensal do MEI ${user.name} com os dados abaixo.
 

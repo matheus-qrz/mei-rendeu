@@ -1,4 +1,4 @@
-# MEI Certo 🧾
+# MEI Rendeu 🧾
 
 Agente financeiro para MEIs via WhatsApp — built by @matheus-qrz
 
@@ -18,8 +18,8 @@ Agente financeiro para MEIs via WhatsApp — built by @matheus-qrz
 ### 1. Clonar e instalar
 
 ```bash
-git clone https://github.com/matheus-qrz/mei-certo
-cd mei-certo
+git clone https://github.com/matheus-qrz/mei-rendeu
+cd mei-rendeu
 npm install
 cp .env.example .env.local
 ```
@@ -52,13 +52,13 @@ docker-compose up -d
 curl -X POST http://localhost:8080/instance/create \
   -H "apikey: SEU_EVOLUTION_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"instanceName": "meicerto", "qrcode": true}'
+  -d '{"instanceName": "meirendeu", "qrcode": true}'
 
 # Pega o QR Code
-curl http://localhost:8080/instance/connect/meicerto \
+curl http://localhost:8080/instance/connect/meirendeu \
   -H "apikey: SEU_EVOLUTION_API_KEY"
 
-# Escaneie com o número do MEI Certo
+# Escaneie com o número do MEI Rendeu
 ```
 
 ### 4. Configurar variáveis de ambiente

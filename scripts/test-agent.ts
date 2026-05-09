@@ -1,5 +1,5 @@
 /**
- * Teste isolado do agente Claude — MEI Certo
+ * Teste isolado do agente Claude — MEI Rendeu
  * 
  * Uso:
  *   npx tsx scripts/test-agent.ts
@@ -71,7 +71,7 @@ const testCases = [
 // ─── Runner ───────────────────────────────────────────────
 async function runTests() {
   console.log("\n╔══════════════════════════════════════════╗")
-  console.log("║      MEI CERTO — TESTE DO AGENTE         ║")
+  console.log("║      MEI RENDEU — TESTE DO AGENTE         ║")
   console.log("╚══════════════════════════════════════════╝\n")
 
   let passed = 0
