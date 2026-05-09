@@ -10,9 +10,9 @@ import { FerramentasClient } from "./FerramentasClient";
 export default async function FerramentasPage({
   searchParams,
 }: {
-  searchParams: { phone?: string };
+  searchParams: Promise<{ phone?: string }>;
 }) {
-  const phone = searchParams.phone;
+  const { phone } = await searchParams;
 
   if (!phone) {
     redirect("/");
