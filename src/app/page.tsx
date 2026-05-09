@@ -1,41 +1,9 @@
-"use client";
+// src/app/page.tsx
 
-import { useState } from "react";
+const WHATSAPP_NUMBER = "5583999999999"; // TODO: trocar pelo número real quando o chip chegar
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Oi! Quero começar a usar o MeiRendeu.")}`;
 
 export default function LandingPage() {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email) return;
-    setLoading(true);
-    setError("");
-
-    try {
-      const res = await fetch("/api/waitlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Algo deu errado. Tenta de novo.");
-        return;
-      }
-
-      setSubmitted(true);
-    } catch {
-      setError("Sem conexão. Tenta de novo.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
     <div className="min-h-screen bg-[#0a1a0f] text-white font-sans overflow-x-hidden">
       {/* ── Fundo com textura sutil ── */}
@@ -52,13 +20,15 @@ export default function LandingPage() {
       <nav className="relative z-10 flex items-center justify-between px-6 py-5 max-w-5xl mx-auto">
         <div className="flex items-center gap-2">
           <span className="text-2xl">🟢</span>
-          <span className="font-black text-xl tracking-tight">MEI Rendeu</span>
+          <span className="font-black text-xl tracking-tight">MeiRendeu</span>
         </div>
         <a
-          href="#lista"
+          href={WHATSAPP_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
           className="hidden sm:inline-flex items-center gap-2 bg-[#c8f135] text-[#0a1a0f] font-bold text-sm px-4 py-2 rounded-full hover:bg-[#d4f94e] transition-colors"
         >
-          Entrar na lista →
+          Começar agora →
         </a>
       </nav>
 
@@ -67,7 +37,7 @@ export default function LandingPage() {
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 bg-[#ffffff0f] border border-[#ffffff15] rounded-full px-4 py-1.5 text-sm text-[#c8f135] font-medium mb-8">
             <span className="w-2 h-2 rounded-full bg-[#c8f135] animate-pulse inline-block" />
-            Em breve — entre na lista de espera
+            7 dias grátis. Sem cartão.
           </div>
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-6">
@@ -83,50 +53,26 @@ export default function LandingPage() {
             chegando no teto — tudo pelo WhatsApp, sem planilha, sem app novo.
           </p>
 
-          {/* CTA Lista de Espera */}
-          <div id="lista">
-            {submitted ? (
-              <div className="flex items-start gap-4 bg-[#c8f13520] border border-[#c8f13540] rounded-2xl px-6 py-5 max-w-md">
-                <span className="text-2xl mt-0.5">✅</span>
-                <div>
-                  <p className="font-bold text-white text-lg">
-                    Você tá na lista!
-                  </p>
-                  <p className="text-[#a0b8a8] text-sm mt-1">
-                    Assim que o MEI Rendeu abrir, você é um dos primeiros a
-                    saber.
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row gap-3 max-w-md"
-              >
-                <input
-                  type="email"
-                  placeholder="Seu melhor e-mail"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="flex-1 bg-[#ffffff0d] border border-[#ffffff20] rounded-xl px-4 py-3 text-white placeholder:text-[#5a7a65] focus:outline-none focus:border-[#c8f13580] transition-colors text-sm"
-                />
-                <button
-                  type="submit"
-                  disabled={loading || !email}
-                  className="bg-[#c8f135] text-[#0a1a0f] font-bold px-6 py-3 rounded-xl hover:bg-[#d4f94e] disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 whitespace-nowrap text-sm"
-                >
-                  {loading ? "Enviando..." : "Quero entrar →"}
-                </button>
-              </form>
-            )}
-            {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
-            {!submitted && (
-              <p className="text-[#4a6a55] text-xs mt-3">
-                Sem spam. Só o aviso quando abrir.
-              </p>
-            )}
+          {/* CTA Principal */}
+          <div className="flex flex-col sm:flex-row gap-3 max-w-md">
+            <a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#c8f135] text-[#0a1a0f] font-bold px-8 py-4 rounded-xl hover:bg-[#d4f94e] transition-all active:scale-95 text-base"
+            >
+              💬 Começar pelo WhatsApp
+            </a>
+            <a
+              href="#planos"
+              className="inline-flex items-center justify-center gap-2 border border-[#1a3020] text-[#a0b8a8] font-bold px-6 py-4 rounded-xl hover:bg-[#0d200f] hover:text-white transition-colors text-base"
+            >
+              Ver planos
+            </a>
           </div>
+          <p className="text-[#4a6a55] text-xs mt-3">
+            Manda um oi no nosso WhatsApp e o assistente te guia. Leva 1 minuto.
+          </p>
         </div>
 
         {/* Mockup flutuante */}
@@ -224,18 +170,25 @@ export default function LandingPage() {
       </section>
 
       {/* ── Planos ── */}
-      <section className="relative z-10 py-24 max-w-5xl mx-auto px-6">
+      <section
+        id="planos"
+        className="relative z-10 py-24 max-w-5xl mx-auto px-6"
+      >
         <p className="text-[#c8f135] font-bold text-sm uppercase tracking-widest mb-4">
           Planos
         </p>
-        <h2 className="text-3xl sm:text-4xl font-black mb-12 leading-tight">
+        <h2 className="text-3xl sm:text-4xl font-black mb-4 leading-tight">
           Preço de MEI pra MEI
         </h2>
+        <p className="text-[#7a9a85] text-base mb-12 max-w-lg">
+          Comece grátis por 7 dias. Cancele quando quiser, sem multa.
+        </p>
+
         <div className="grid sm:grid-cols-2 gap-5 max-w-2xl">
           {planos.map((p) => (
             <div
-              key={p.nome}
-              className={`relative rounded-2xl p-6 border ${
+              key={p.id}
+              className={`relative rounded-2xl p-6 border flex flex-col ${
                 p.destaque
                   ? "bg-[#c8f135] text-[#0a1a0f] border-[#c8f135]"
                   : "bg-[#0d200f] text-white border-[#1a3020]"
@@ -259,7 +212,7 @@ export default function LandingPage() {
                   /mês
                 </span>
               </div>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2.5 mb-6 flex-1">
                 {p.items.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm">
                     <span
@@ -277,11 +230,22 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
+              <a
+                href={`/assinar?plan=${p.id}`}
+                className={`block text-center font-bold py-3 rounded-xl transition-all active:scale-95 ${
+                  p.destaque
+                    ? "bg-[#0a1a0f] text-[#c8f135] hover:bg-[#1a3020]"
+                    : "bg-[#c8f135] text-[#0a1a0f] hover:bg-[#d4f94e]"
+                }`}
+              >
+                Assinar {p.nome} →
+              </a>
             </div>
           ))}
         </div>
         <p className="text-[#4a6a55] text-sm mt-6">
-          * Preços para early adopters. Pode mudar após o lançamento.
+          * Antes de assinar, manda um oi no nosso WhatsApp para criar seu
+          cadastro.
         </p>
       </section>
 
@@ -292,13 +256,15 @@ export default function LandingPage() {
             Chega de susto com o DAS.
           </h2>
           <p className="text-[#2a4a1f] text-lg mb-8 max-w-md mx-auto">
-            Entre na lista e seja um dos primeiros MEIs a testar o MEI Rendeu.
+            Comece agora gratuitamente. 7 dias para testar, sem cartão.
           </p>
           <a
-            href="#lista"
+            href={WHATSAPP_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#0a1a0f] text-[#c8f135] font-bold px-8 py-4 rounded-full text-base hover:bg-[#1a3020] transition-colors active:scale-95"
           >
-            Quero meu lugar na fila →
+            💬 Falar com o MeiRendeu →
           </a>
         </div>
       </section>
@@ -307,32 +273,30 @@ export default function LandingPage() {
       <footer className="relative z-10 py-8 max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <span className="text-lg">🟢</span>
-          <span className="font-black text-sm text-white">MEI Rendeu</span>
+          <span className="font-black text-sm text-white">MeiRendeu</span>
         </div>
         <p className="text-[#3a5a45] text-xs text-center">
-          Feito com ☕ em João Pessoa/NE.{" "}
+          Feito com ☕ em João Pessoa/PB.{" "}
           <span>Não somos contador. Somos assistente financeiro.</span>
         </p>
         <p className="text-[#3a5a45] text-xs">
-          © {new Date().getFullYear()} MEI Rendeu
+          © {new Date().getFullYear()} MeiRendeu
         </p>
       </footer>
     </div>
   );
 }
 
-// ── Componente mockup WhatsApp ──────────────────────────────
+// ─── Componente mockup WhatsApp ──────────────────────────────
 function WhatsAppMockup() {
   return (
     <div className="bg-[#0d200f] border border-[#1a3020] rounded-3xl overflow-hidden shadow-2xl">
       <div className="bg-[#128C7E] px-4 py-3 flex items-center gap-3">
         <div className="w-8 h-8 rounded-full bg-[#c8f135] flex items-center justify-center text-[#0a1a0f] font-black text-xs">
-          MC
+          MR
         </div>
         <div>
-          <p className="text-white font-bold text-sm leading-none">
-            MEI Rendeu
-          </p>
+          <p className="text-white font-bold text-sm leading-none">MeiRendeu</p>
           <p className="text-[#a0d4cd] text-xs mt-0.5">online</p>
         </div>
       </div>
@@ -381,7 +345,7 @@ function ChatMsg({ from, text }: { from: "user" | "bot"; text: string }) {
   );
 }
 
-// ── Dados ────────────────────────────────────────────────────
+// ─── Dados ────────────────────────────────────────────────────
 const dores = [
   { emoji: "😰", texto: "Esqueceu de pagar o DAS e levou multa desnecessária" },
   {
@@ -408,12 +372,12 @@ const dores = [
 
 const passos = [
   {
-    titulo: "Conecta no WhatsApp",
+    titulo: "Manda um oi no WhatsApp",
     desc: "Você salva o número e manda um oi. Pronto. Sem download, sem cadastro complicado, sem tutorial.",
     emoji: "📲",
   },
   {
-    titulo: "Manda o que aconteceu",
+    titulo: "Conta o que aconteceu",
     desc: '"Vendi R$300 hoje" ou "paguei R$80 de gasolina" — escreve como você fala e o agente entende.',
     emoji: "💬",
   },
@@ -474,6 +438,7 @@ const features = [
 
 const planos = [
   {
+    id: "basic" as const,
     nome: "Básico",
     preco: "R$29",
     destaque: false,
@@ -486,15 +451,17 @@ const planos = [
     ],
   },
   {
+    id: "pro" as const,
     nome: "Pro",
     preco: "R$49",
     destaque: true,
     items: [
       "Tudo do Básico",
       "Análise financeira com IA",
-      "Relatórios com gráficos (PDF)",
+      "Calculadora de precificação",
+      "Gerador de contratos",
+      "Relatórios PDF com gráficos",
       "Histórico ilimitado",
-      "Suporte prioritário",
     ],
   },
 ];
